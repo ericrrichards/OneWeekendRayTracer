@@ -15,5 +15,6 @@ namespace OneWeekendRayTracer {
 
     public abstract class Hittable {
         public abstract bool Hit(Ray r, float tMin, float tMax, out HitRecord rec);
+        public abstract bool BoundingBox(float t0, float t1, out BoundingBox box);
     }
 }

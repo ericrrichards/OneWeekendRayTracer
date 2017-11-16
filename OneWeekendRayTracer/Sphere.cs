@@ -38,5 +38,10 @@
             rec = default(HitRecord);
             return false;
         }
+
+        public override bool BoundingBox(float t0, float t1, out BoundingBox box) {
+            box = new BoundingBox(Center - new Vector3(Radius, Radius, Radius), Center + new Vector3(Radius,Radius,Radius));
+            return true;
+        }
     }
 }
