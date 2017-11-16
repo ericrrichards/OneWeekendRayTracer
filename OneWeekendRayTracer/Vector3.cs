@@ -2,45 +2,52 @@ namespace OneWeekendRayTracer {
     using System;
 
     public struct Vector3 {
-        public float[] v;
+        private readonly float _x;
+        private readonly float _y;
+        private readonly float _z;
 
         public Vector3(float x, float y, float z) {
-            v = new[] { x, y, z };
+            _x = x;
+            _y = y;
+            _z = z;
         }
 
-        public float X => v[0];
-        public float Y => v[1];
-        public float Z => v[2];
-        public float R => v[0];
-        public float G => v[1];
-        public float B => v[2];
+        public float X => _x;
+        public float Y => _y;
+        public float Z => _z;
+        public float R => _x;
+        public float G => _y;
+        public float B => _z;
 
-        public static Vector3 operator -(Vector3 v) => new Vector3(-v.X, -v.Y, -v.Z);
+        public static Vector3 operator -(Vector3 v) => new Vector3(-v._x, -v._y, -v._z);
 
 
-        public float this[int i] => v[i];
+        public float this[byte i] => i == 0 ? _x : i == 1 ? _y : _z;
 
-        public static Vector3 operator +(Vector3 v1, Vector3 v2) => new Vector3(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
-        public static Vector3 operator -(Vector3 v1, Vector3 v2) => new Vector3(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
-        public static Vector3 operator *(Vector3 v1, Vector3 v2) => new Vector3(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z);
-        public static Vector3 operator /(Vector3 v1, Vector3 v2) => new Vector3(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z);
-        public static Vector3 operator*(Vector3 v, float f)=>new Vector3(v.X*f, v.Y*f, v.Z*f);
-        public static Vector3 operator/(Vector3 v, float f)=> new Vector3(v.X/f, v.Y/f, v.Z/f);
+        public static Vector3 operator +(Vector3 v1, Vector3 v2) => new Vector3(v1._x + v2._x, v1._y + v2._y, v1._z + v2._z);
+        public static Vector3 operator -(Vector3 v1, Vector3 v2) => new Vector3(v1._x - v2._x, v1._y - v2._y, v1._z - v2._z);
+        public static Vector3 operator *(Vector3 v1, Vector3 v2) => new Vector3(v1._x * v2._x, v1._y * v2._y, v1._z * v2._z);
+        public static Vector3 operator /(Vector3 v1, Vector3 v2) => new Vector3(v1._x / v2._x, v1._y / v2._y, v1._z / v2._z);
+        public static Vector3 operator *(Vector3 v, float f) => new Vector3(v._x * f, v._y * f, v._z * f);
+        public static Vector3 operator /(Vector3 v, float f) => new Vector3(v._x / f, v._y / f, v._z / f);
 
-        public float Length => (float)Math.Sqrt(X * X + Y * Y + Z * Z);
-        public float SquaredLength => X * X + Y * Y + Z * Z;
+        public float Length => (float)Math.Sqrt(_x * _x + _y * _y + _z * _z);
+        public float SquaredLength => _x * _x + _y * _y + _z * _z;
 
-        public static Vector3 UnitX => new Vector3(1, 0, 0);
-        public static Vector3 UnitY => new Vector3(0,1,0);
-        public static Vector3 UnitZ => new Vector3(0,0,1);
+        public static readonly Vector3 UnitX = new Vector3(1, 0, 0);
+        public static readonly Vector3 UnitY = new Vector3(0, 1, 0);
+        public static readonly Vector3 UnitZ = new Vector3(0, 0, 1);
+        public static readonly Vector3 UnitXY = new Vector3(1, 1, 0);
+        public static readonly Vector3 UnitXYZ = new Vector3(1, 1, 1);
+        public static readonly Vector3 Zero = new Vector3(0, 0, 0);
 
-        public static float Dot(Vector3 v1, Vector3 v2) => v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
+        public static float Dot(Vector3 v1, Vector3 v2) => v1._x * v2._x + v1._y * v2._y + v1._z * v2._z;
 
-        public static Vector3 Cross(Vector3 v1, Vector3 v2) => 
+        public static Vector3 Cross(Vector3 v1, Vector3 v2) =>
             new Vector3(
-                        v1.Y*v2.Z - v1.Z*v2.Y,
-                        -(v1.X*v2.Z - v1.Z*v2.X),
-                        v1.X * v2.Y - v1.Y*v2.X
+                        v1._y * v2._z - v1._z * v2._y,
+                        -(v1._x * v2._z - v1._z * v2._x),
+                        v1._x * v2._y - v1._y * v2._x
                        );
 
         public static Vector3 Normalize(Vector3 v) {
@@ -48,5 +55,9 @@ namespace OneWeekendRayTracer {
         }
 
         public static Vector3 Lerp(Vector3 v1, Vector3 v2, float prc) => v1 * (1.0f - prc) + v2 * prc;
+    }
+
+    public static class Colors {
+        public static readonly Vector3 White = Vector3.UnitXYZ;
     }
 }

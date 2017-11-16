@@ -1,9 +1,16 @@
 namespace OneWeekendRayTracer {
-    public struct HitRecord {
-        public float T { get; set; }
-        public Vector3 P { get; set; }
-        public Vector3 Normal { get; set; }
-        public Material Material { get; set; }
+    public class HitRecord {
+        public readonly float T;
+        public readonly Vector3 P;
+        public readonly Vector3 Normal;
+        public readonly Material Material;
+
+        public HitRecord(float t, Vector3 p, Vector3 n, Material m) {
+            T = t;
+            P = p;
+            Normal = n;
+            Material = m;
+        }
     }
 
     public abstract class Hittable {

@@ -1,7 +1,7 @@
 ﻿namespace OneWeekendRayTracer {
-    public class Ray {
-        public Vector3 Origin { get; }
-        public Vector3 Direction { get; }
+    public struct Ray {
+        public readonly Vector3 Origin;
+        public readonly Vector3 Direction;
 
         public Ray(Vector3 origin, Vector3 direction) {
             Origin = origin;

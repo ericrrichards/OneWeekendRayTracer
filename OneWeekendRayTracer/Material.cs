@@ -8,7 +8,7 @@ namespace OneWeekendRayTracer {
         public static Vector3 RandomInUnitSphere() {
             Vector3 p;
             do {
-                p = new Vector3((float)Rand.NextDouble(), (float)Rand.NextDouble(), (float)Rand.NextDouble()) * 2f - new Vector3(1, 1, 1);
+                p = new Vector3((float)Rand.NextDouble(), (float)Rand.NextDouble(), (float)Rand.NextDouble()) * 2f - Vector3.UnitXYZ;
             } while (p.SquaredLength >= 1.0f);
             return p;
         }
@@ -63,7 +63,7 @@ namespace OneWeekendRayTracer {
 
         public override bool Scatter(Ray rIn, HitRecord rec, out Vector3 attenuation, out Ray scattered) {
             var reflected = Reflect(Vector3.Normalize(rIn.Direction), rec.Normal);
-            scattered = new Ray(rec.P, reflected + RandomInUnitSphere()*Fuzz);
+            scattered = new Ray(rec.P, reflected + RandomInUnitSphere() * Fuzz);
             attenuation = Albedo;
             return Vector3.Dot(scattered.Direction, rec.Normal) > 0;
         }
@@ -81,11 +81,11 @@ namespace OneWeekendRayTracer {
             Vector3 outwardNormal;
             var reflected = Reflect(rIn.Direction, rec.Normal);
             float niOverNt;
-            attenuation = new Vector3(1,1,1);
+            attenuation = new Vector3(1, 1, 1);
             float cosine;
             float reflectProb;
 
-            
+
             if (Vector3.Dot(rIn.Direction, rec.Normal) > 0) {
                 outwardNormal = -rec.Normal;
                 niOverNt = RefractiveIndex;
@@ -106,7 +106,7 @@ namespace OneWeekendRayTracer {
             } else {
                 scattered = new Ray(rec.P, refracted);
             }
-            
+
             return true;
         }
     }

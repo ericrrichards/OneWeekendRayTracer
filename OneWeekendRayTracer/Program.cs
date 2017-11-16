@@ -8,6 +8,7 @@ namespace OneWeekendRayTracer {
     using System.Diagnostics;
     using System.IO;
     using System.Reflection;
+    using System.Threading;
     using System.Windows.Forms;
 
     using JetBrains.Annotations;
@@ -35,7 +36,7 @@ namespace OneWeekendRayTracer {
             }
             prompt:
             Console.Write("> ");
-            var readLine = (Console.ReadLine()??string.Empty).Trim();
+            var readLine = (Console.ReadLine() ?? string.Empty).Trim();
             if (readLine == "Q" || readLine == "q") {
                 Environment.Exit(0);
             } else if (string.IsNullOrWhiteSpace(readLine)) {
@@ -43,7 +44,11 @@ namespace OneWeekendRayTracer {
             }
             var choice = Convert.ToInt32(readLine);
             if (choice > 0 && choice <= Programs.Count) {
+                var stopwatch = Stopwatch.StartNew();
                 Programs[choice - 1].Invoke(null, null);
+                stopwatch.Stop();
+                Console.WriteLine($"Elapsed: {stopwatch.ElapsedMilliseconds} ms");
+                Console.ReadLine();
             } else {
                 Console.WriteLine($"Invalid selection: {choice}");
                 goto prompt;
@@ -99,7 +104,7 @@ namespace OneWeekendRayTracer {
             Vector3 Color(Ray r) {
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -111,7 +116,7 @@ namespace OneWeekendRayTracer {
             var lowerLeft = new Vector3(-2, -1, -1);
             var horizontal = new Vector3(4, 0, 0);
             var vertical = new Vector3(0, 2, 0);
-            var origin = new Vector3(0, 0, 0);
+            var origin = Vector3.Zero;
 
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
@@ -146,7 +151,7 @@ namespace OneWeekendRayTracer {
                 }
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -158,7 +163,7 @@ namespace OneWeekendRayTracer {
             var lowerLeft = new Vector3(-2, -1, -1);
             var horizontal = new Vector3(4, 0, 0);
             var vertical = new Vector3(0, 2, 0);
-            var origin = new Vector3(0, 0, 0);
+            var origin = Vector3.Zero;
 
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
@@ -195,12 +200,12 @@ namespace OneWeekendRayTracer {
 
                 if (t > 0.0) {
                     var n = Vector3.Normalize(r.At(t) - new Vector3(0, 0, -1));
-                    return new Vector3(n.X + 1, n.Y+1, n.Z+1)*0.5f;
+                    return new Vector3(n.X + 1, n.Y + 1, n.Z + 1) * 0.5f;
                 }
 
                 var unitDirection = Vector3.Normalize(r.Direction);
                 t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -212,7 +217,7 @@ namespace OneWeekendRayTracer {
             var lowerLeft = new Vector3(-2, -1, -1);
             var horizontal = new Vector3(4, 0, 0);
             var vertical = new Vector3(0, 2, 0);
-            var origin = new Vector3(0, 0, 0);
+            var origin = Vector3.Zero;
 
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
@@ -235,11 +240,11 @@ namespace OneWeekendRayTracer {
         private static void TwoSpheres() {
             Vector3 Color(Ray r, Hittable hittable) {
                 if (hittable.Hit(r, 0.0f, float.MaxValue, out HitRecord rec)) {
-                    return new Vector3(rec.Normal.X+1, rec.Normal.Y+1, rec.Normal.Z+1)* 0.5f;
+                    return new Vector3(rec.Normal.X + 1, rec.Normal.Y + 1, rec.Normal.Z + 1) * 0.5f;
                 }
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -251,9 +256,9 @@ namespace OneWeekendRayTracer {
             var lowerLeft = new Vector3(-2, -1, -1);
             var horizontal = new Vector3(4, 0, 0);
             var vertical = new Vector3(0, 2, 0);
-            var origin = new Vector3(0, 0, 0);
+            var origin = Vector3.Zero;
 
-            var world = new HittableList(new Sphere(new Vector3( 0,0,-1), 0.5f), new Sphere(new Vector3(0, -100.5f, -1),100 ));
+            var world = new HittableList(new Sphere(new Vector3(0, 0, -1), 0.5f), new Sphere(new Vector3(0, -100.5f, -1), 100));
 
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
@@ -280,7 +285,7 @@ namespace OneWeekendRayTracer {
                 }
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -295,10 +300,10 @@ namespace OneWeekendRayTracer {
             var cam = new Camera();
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
-                    var col = new Vector3(0,0,0);
+                    var col = Vector3.Zero;
                     for (var s = 0; s < samples; s++) {
-                        var u = (float)(x+ rand.NextDouble()) / width;
-                        var v = (float)(y + rand.NextDouble())/ height;
+                        var u = (float)(x + rand.NextDouble()) / width;
+                        var v = (float)(y + rand.NextDouble()) / height;
                         var r = cam.GetRay(u, v);
                         col += Color(r, world);
                     }
@@ -317,7 +322,7 @@ namespace OneWeekendRayTracer {
         [UsedImplicitly]
         private static void Diffuse() {
             var rand = new Random();
-            
+
 
             Vector3 Color(Ray r, Hittable hittable) {
                 if (hittable.Hit(r, 0.0f, float.MaxValue, out HitRecord rec)) {
@@ -326,7 +331,7 @@ namespace OneWeekendRayTracer {
                 }
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -337,11 +342,11 @@ namespace OneWeekendRayTracer {
             sb.Append($"P3\r\n{width} {height}\r\n255\r\n");
 
             var world = new HittableList(new Sphere(new Vector3(0, 0, -1), 0.5f), new Sphere(new Vector3(0, -100.5f, -1), 100));
-            
+
             var cam = new Camera();
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
-                    var col = new Vector3(0, 0, 0);
+                    var col = Vector3.Zero;
                     for (var s = 0; s < samples; s++) {
                         var u = (float)(x + rand.NextDouble()) / width;
                         var v = (float)(y + rand.NextDouble()) / height;
@@ -371,11 +376,11 @@ namespace OneWeekendRayTracer {
                     if (depth < 50 && rec.Material.Scatter(r, rec, out Vector3 attenuation, out Ray scattered)) {
                         return attenuation * Color(scattered, hittable, depth + 1);
                     }
-                    return new Vector3(0,0,0);
+                    return Vector3.Zero;
                 }
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -386,7 +391,7 @@ namespace OneWeekendRayTracer {
             sb.Append($"P3\r\n{width} {height}\r\n255\r\n");
 
             var world = new HittableList(
-                new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new Vector3(0.8f, 0.3f, 0.3f))), 
+                new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new Vector3(0.8f, 0.3f, 0.3f))),
                 new Sphere(new Vector3(0, -100.5f, -1), 100, new Lambertian(new Vector3(0.8f, 0.8f, 0.0f))),
                 new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new Vector3(0.8f, 0.6f, 0.2f), 1.0f)),
                 new Sphere(new Vector3(-1, 0, -1), 0.5f, new Metal(new Vector3(0.8f, 0.8f, 0.8f), 0.3f))
@@ -395,12 +400,12 @@ namespace OneWeekendRayTracer {
             var cam = new Camera();
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
-                    var col = new Vector3(0, 0, 0);
+                    var col = Vector3.Zero;
                     for (var s = 0; s < samples; s++) {
                         var u = (float)(x + rand.NextDouble()) / width;
                         var v = (float)(y + rand.NextDouble()) / height;
                         var r = cam.GetRay(u, v);
-                        col += Color(r, world,0);
+                        col += Color(r, world, 0);
                     }
                     col /= samples;
                     col = new Vector3((float)Math.Sqrt(col.R), (float)Math.Sqrt(col.G), (float)Math.Sqrt(col.B));
@@ -425,11 +430,11 @@ namespace OneWeekendRayTracer {
                     if (depth < 50 && rec.Material.Scatter(r, rec, out Vector3 attenuation, out Ray scattered)) {
                         return attenuation * Color(scattered, hittable, depth + 1);
                     }
-                    return new Vector3(0, 0, 0);
+                    return Vector3.Zero;
                 }
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -442,7 +447,7 @@ namespace OneWeekendRayTracer {
             var world = new HittableList(
                                          new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new Vector3(0.1f, 0.2f, 0.5f))),
                                          new Sphere(new Vector3(0, -100.5f, -1), 100, new Lambertian(new Vector3(0.8f, 0.8f, 0.0f))),
-                                         new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new Vector3(0.8f, 0.6f, 0.2f),0)),
+                                         new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new Vector3(0.8f, 0.6f, 0.2f), 0)),
                                          new Sphere(new Vector3(-1, 0, -1), 0.5f, new Dialectric(1.5f)),
                                          new Sphere(new Vector3(-1, 0, -1), -0.45f, new Dialectric(1.5f))
                                         );
@@ -450,7 +455,7 @@ namespace OneWeekendRayTracer {
             var cam = new Camera();
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
-                    var col = new Vector3(0, 0, 0);
+                    var col = Vector3.Zero;
                     for (var s = 0; s < samples; s++) {
                         var u = (float)(x + rand.NextDouble()) / width;
                         var v = (float)(y + rand.NextDouble()) / height;
@@ -470,6 +475,7 @@ namespace OneWeekendRayTracer {
             File.WriteAllText(fileName, sb.ToString());
             Process.Start(fileName);
         }
+        
         [UsedImplicitly]
         private static void Camera() {
             var rand = new Random();
@@ -480,11 +486,11 @@ namespace OneWeekendRayTracer {
                     if (depth < 50 && rec.Material.Scatter(r, rec, out Vector3 attenuation, out Ray scattered)) {
                         return attenuation * Color(scattered, hittable, depth + 1);
                     }
-                    return new Vector3(0, 0, 0);
+                    return Vector3.Zero;
                 }
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -495,14 +501,14 @@ namespace OneWeekendRayTracer {
             sb.Append($"P3\r\n{width} {height}\r\n255\r\n");
             var R = (float)Math.Cos(Math.PI / 4);
             var world = new HittableList(
-                                         new Sphere(new Vector3(-R, 0, -1), R, new Lambertian(new Vector3(0,0,1))),
-                                         new Sphere(new Vector3(R, 0, -1), R, new Lambertian(new Vector3(1,0,0)))
+                                         new Sphere(new Vector3(-R, 0, -1), R, new Lambertian(new Vector3(0, 0, 1))),
+                                         new Sphere(new Vector3(R, 0, -1), R, new Lambertian(new Vector3(1, 0, 0)))
                                         );
 
-            var cam = new Camera(90, (float)width/height);
+            var cam = new Camera(90, (float)width / height);
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
-                    var col = new Vector3(0, 0, 0);
+                    var col = Vector3.Zero;
                     for (var s = 0; s < samples; s++) {
                         var u = (float)(x + rand.NextDouble()) / width;
                         var v = (float)(y + rand.NextDouble()) / height;
@@ -532,11 +538,11 @@ namespace OneWeekendRayTracer {
                     if (depth < 50 && rec.Material.Scatter(r, rec, out Vector3 attenuation, out Ray scattered)) {
                         return attenuation * Color(scattered, hittable, depth + 1);
                     }
-                    return new Vector3(0, 0, 0);
+                    return Vector3.Zero;
                 }
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -557,7 +563,7 @@ namespace OneWeekendRayTracer {
             var cam = new Camera(new Vector3(-2, 2, 1), new Vector3(0, 0, -1), Vector3.UnitY, 30, (float)width / height);
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
-                    var col = new Vector3(0, 0, 0);
+                    var col = Vector3.Zero;
                     for (var s = 0; s < samples; s++) {
                         var u = (float)(x + rand.NextDouble()) / width;
                         var v = (float)(y + rand.NextDouble()) / height;
@@ -587,11 +593,11 @@ namespace OneWeekendRayTracer {
                     if (depth < 50 && rec.Material.Scatter(r, rec, out Vector3 attenuation, out Ray scattered)) {
                         return attenuation * Color(scattered, hittable, depth + 1);
                     }
-                    return new Vector3(0, 0, 0);
+                    return Vector3.Zero;
                 }
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 200;
@@ -616,7 +622,7 @@ namespace OneWeekendRayTracer {
             var cam = new Camera(lookFrom, lookAt, Vector3.UnitY, 20, (float)width / height, aperature, distToFocus);
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
-                    var col = new Vector3(0, 0, 0);
+                    var col = Vector3.Zero;
                     for (var s = 0; s < samples; s++) {
                         var u = (float)(x + rand.NextDouble()) / width;
                         var v = (float)(y + rand.NextDouble()) / height;
@@ -646,11 +652,11 @@ namespace OneWeekendRayTracer {
                     if (depth < 50 && rec.Material.Scatter(r, rec, out Vector3 attenuation, out Ray scattered)) {
                         return attenuation * Color(scattered, hittable, depth + 1);
                     }
-                    return new Vector3(0, 0, 0);
+                    return Vector3.Zero;
                 }
                 var unitDirection = Vector3.Normalize(r.Direction);
                 var t = 0.5f * (unitDirection.Y + 1.0f);
-                return Vector3.Lerp(new Vector3(1, 1, 1), new Vector3(0.5f, 0.7f, 1.0f), t);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
             }
 
             var width = 1200;
@@ -663,13 +669,13 @@ namespace OneWeekendRayTracer {
             var world = HittableList.RandomScene();
 
             var lookFrom = new Vector3(13, 2, 3);
-            var lookAt = new Vector3(0, 0, 0);
+            var lookAt = Vector3.Zero;
             var distToFocus = 10.0f;
             var aperature = 0.1f;
             var cam = new Camera(lookFrom, lookAt, Vector3.UnitY, 20, (float)width / height, aperature, distToFocus);
             for (var y = height - 1; y >= 0; y--) {
                 for (var x = 0; x < width; x++) {
-                    var col = new Vector3(0, 0, 0);
+                    var col = Vector3.Zero;
                     for (var s = 0; s < samples; s++) {
                         var u = (float)(x + rand.NextDouble()) / width;
                         var v = (float)(y + rand.NextDouble()) / height;
@@ -691,5 +697,5 @@ namespace OneWeekendRayTracer {
         }
     }
 
-    
+
 }
