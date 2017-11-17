@@ -391,10 +391,10 @@ namespace OneWeekendRayTracer {
             sb.Append($"P3\r\n{width} {height}\r\n255\r\n");
 
             var world = new HittableList(
-                new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new Vector3(0.8f, 0.3f, 0.3f))),
-                new Sphere(new Vector3(0, -100.5f, -1), 100, new Lambertian(new Vector3(0.8f, 0.8f, 0.0f))),
-                new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new Vector3(0.8f, 0.6f, 0.2f), 1.0f)),
-                new Sphere(new Vector3(-1, 0, -1), 0.5f, new Metal(new Vector3(0.8f, 0.8f, 0.8f), 0.3f))
+                new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new ConstantTexture(new Vector3(0.8f, 0.3f, 0.3f)))),
+                new Sphere(new Vector3(0, -100.5f, -1), 100, new Lambertian(new ConstantTexture(new Vector3(0.8f, 0.8f, 0.0f)))),
+                new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new ConstantTexture( new Vector3(0.8f, 0.6f, 0.2f)), 1.0f)),
+                new Sphere(new Vector3(-1, 0, -1), 0.5f, new Metal(new ConstantTexture( new Vector3(0.8f, 0.8f, 0.8f)), 0.3f))
             );
 
             var cam = new Camera();
@@ -445,9 +445,9 @@ namespace OneWeekendRayTracer {
             sb.Append($"P3\r\n{width} {height}\r\n255\r\n");
 
             var world = new HittableList(
-                                         new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new Vector3(0.1f, 0.2f, 0.5f))),
-                                         new Sphere(new Vector3(0, -100.5f, -1), 100, new Lambertian(new Vector3(0.8f, 0.8f, 0.0f))),
-                                         new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new Vector3(0.8f, 0.6f, 0.2f), 0)),
+                                         new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new ConstantTexture(new Vector3(0.1f, 0.2f, 0.5f)))),
+                                         new Sphere(new Vector3(0, -100.5f, -1), 100, new Lambertian(new ConstantTexture(new Vector3(0.8f, 0.8f, 0.0f)))),
+                                         new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new ConstantTexture( new Vector3(0.8f, 0.6f, 0.2f)), 0)),
                                          new Sphere(new Vector3(-1, 0, -1), 0.5f, new Dialectric(1.5f)),
                                          new Sphere(new Vector3(-1, 0, -1), -0.45f, new Dialectric(1.5f))
                                         );
@@ -501,8 +501,8 @@ namespace OneWeekendRayTracer {
             sb.Append($"P3\r\n{width} {height}\r\n255\r\n");
             var R = (float)Math.Cos(Math.PI / 4);
             var world = new HittableList(
-                                         new Sphere(new Vector3(-R, 0, -1), R, new Lambertian(new Vector3(0, 0, 1))),
-                                         new Sphere(new Vector3(R, 0, -1), R, new Lambertian(new Vector3(1, 0, 0)))
+                                         new Sphere(new Vector3(-R, 0, -1), R, new Lambertian(new ConstantTexture(new Vector3(0, 0, 1)))),
+                                         new Sphere(new Vector3(R, 0, -1), R, new Lambertian(new ConstantTexture(new Vector3(1, 0, 0))))
                                         );
 
             var cam = new Camera(90, (float)width / height);
@@ -553,9 +553,9 @@ namespace OneWeekendRayTracer {
             sb.Append($"P3\r\n{width} {height}\r\n255\r\n");
 
             var world = new HittableList(
-                                         new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new Vector3(0.1f, 0.2f, 0.5f))),
-                                         new Sphere(new Vector3(0, -100.5f, -1), 100, new Lambertian(new Vector3(0.8f, 0.8f, 0.0f))),
-                                         new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new Vector3(0.8f, 0.6f, 0.2f), 0)),
+                                         new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new ConstantTexture(new Vector3(0.1f, 0.2f, 0.5f)))),
+                                         new Sphere(new Vector3(0, -100.5f, -1), 100, new Lambertian(new ConstantTexture(new Vector3(0.8f, 0.8f, 0.0f)))),
+                                         new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new ConstantTexture(new Vector3(0.8f, 0.6f, 0.2f)), 0)),
                                          new Sphere(new Vector3(-1, 0, -1), 0.5f, new Dialectric(1.5f)),
                                          new Sphere(new Vector3(-1, 0, -1), -0.45f, new Dialectric(1.5f))
                                         );
@@ -608,9 +608,9 @@ namespace OneWeekendRayTracer {
             sb.Append($"P3\r\n{width} {height}\r\n255\r\n");
 
             var world = new HittableList(
-                                         new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new Vector3(0.1f, 0.2f, 0.5f))),
-                                         new Sphere(new Vector3(0, -100.5f, -1), 100, new Lambertian(new Vector3(0.8f, 0.8f, 0.0f))),
-                                         new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new Vector3(0.8f, 0.6f, 0.2f), 0)),
+                                         new Sphere(new Vector3(0, 0, -1), 0.5f, new Lambertian(new ConstantTexture(new Vector3(0.1f, 0.2f, 0.5f)))),
+                                         new Sphere(new Vector3(0, -100.5f, -1), 100, new Lambertian(new ConstantTexture(new Vector3(0.8f, 0.8f, 0.0f)))),
+                                         new Sphere(new Vector3(1, 0, -1), 0.5f, new Metal(new ConstantTexture( new Vector3(0.8f, 0.6f, 0.2f)), 0)),
                                          new Sphere(new Vector3(-1, 0, -1), 0.5f, new Dialectric(1.5f)),
                                          new Sphere(new Vector3(-1, 0, -1), -0.45f, new Dialectric(1.5f))
                                         );
@@ -667,6 +667,59 @@ namespace OneWeekendRayTracer {
             sb.Append($"P3\r\n{width} {height}\r\n255\r\n");
 
             var world = HittableList.RandomScene();
+
+            var lookFrom = new Vector3(13, 2, 3);
+            var lookAt = Vector3.Zero;
+            var distToFocus = 10.0f;
+            var aperature = 0.1f;
+            var cam = new Camera(lookFrom, lookAt, Vector3.UnitY, 20, (float)width / height, aperature, distToFocus);
+            for (var y = height - 1; y >= 0; y--) {
+                for (var x = 0; x < width; x++) {
+                    var col = Vector3.Zero;
+                    for (var s = 0; s < samples; s++) {
+                        var u = (float)(x + rand.NextDouble()) / width;
+                        var v = (float)(y + rand.NextDouble()) / height;
+                        var r = cam.GetRay(u, v);
+                        col += Color(r, world, 0);
+                    }
+                    col /= samples;
+                    col = new Vector3((float)Math.Sqrt(col.R), (float)Math.Sqrt(col.G), (float)Math.Sqrt(col.B));
+                    var ir = (int)(255.99f * col.R);
+                    var ig = (int)(255.99f * col.G);
+                    var ib = (int)(255.99f * col.B);
+
+                    sb.AppendLine($"{ir} {ig} {ib}");
+                }
+            }
+            var fileName = "out.ppm";
+            File.WriteAllText(fileName, sb.ToString());
+            Process.Start(fileName);
+        }
+        [UsedImplicitly]
+        private static void RandomSceneBVH() {
+            var rand = new Random();
+
+
+            Vector3 Color(Ray r, Hittable hittable, int depth) {
+                if (hittable.Hit(r, 0.001f, float.MaxValue, out HitRecord rec)) {
+                    if (depth < 50 && rec.Material.Scatter(r, rec, out Vector3 attenuation, out Ray scattered)) {
+                        return attenuation * Color(scattered, hittable, depth + 1);
+                    }
+                    return Vector3.Zero;
+                }
+                var unitDirection = Vector3.Normalize(r.Direction);
+                var t = 0.5f * (unitDirection.Y + 1.0f);
+                return Vector3.Lerp(Colors.White, new Vector3(0.5f, 0.7f, 1.0f), t);
+            }
+
+            var width = 1200;
+            var height = 800;
+            var samples = 10;
+
+            var sb = new StringBuilder();
+            sb.Append($"P3\r\n{width} {height}\r\n255\r\n");
+
+            var world = new BVHNode(HittableList.RandomScene().List, 0, 0);
 
             var lookFrom = new Vector3(13, 2, 3);
             var lookAt = Vector3.Zero;

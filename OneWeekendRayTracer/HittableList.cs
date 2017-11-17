@@ -25,19 +25,25 @@
             return hitAnything;
         }
 
+        public override bool BoundingBox(float t0, float t1, out BoundingBox box) {
+            box = null;
+            return false;
+        }
+
         public static HittableList RandomScene() {
             var rand = new Random();
             var spheres = new List<Hittable>();
-            spheres.Add(new Sphere(new Vector3(0, -1000, 0), 1000, new Lambertian(new Vector3(0.5f, 0.5f, 0.5f))));
+            var checker = new CheckerTexture(new ConstantTexture(new Vector3(0.2f, 0.3f, 0.1f)), new ConstantTexture(new Vector3(0.9f, 0.9f, 0.9f)) );
+            spheres.Add(new Sphere(new Vector3(0, -1000, 0), 1000, new Lambertian(checker)));
             for (var a = -11; a < 11; a++) {
                 for (var b = -11; b < 11; b++) {
                     var mat = rand.Next(100);
                     var center = new Vector3(a + 0.9f * (float)rand.NextDouble(), 0.2f, b + 0.9f * (float)rand.NextDouble());
                     if ((center - new Vector3(4, 0.2f, 0)).Length > 0.9f) {
                         if (mat < 80) {
-                            spheres.Add(new Sphere(center, 0.2f, new Lambertian(new Vector3((float)rand.NextDouble() * (float)rand.NextDouble(), (float)rand.NextDouble() * (float)rand.NextDouble(), (float)rand.NextDouble() * (float)rand.NextDouble()))));
+                            spheres.Add(new Sphere(center, 0.2f, new Lambertian(new ConstantTexture(new Vector3((float)rand.NextDouble() * (float)rand.NextDouble(), (float)rand.NextDouble() * (float)rand.NextDouble(), (float)rand.NextDouble() * (float)rand.NextDouble())))));
                         } else if (mat < 95) {
-                            spheres.Add(new Sphere(center, 0.2f, new Metal(new Vector3(0.5f * (1 + (float)rand.NextDouble()), 0.5f * (1 + (float)rand.NextDouble()), 0.5f * (1 + (float)rand.NextDouble())), 0.5f * (float)rand.NextDouble())));
+                            spheres.Add(new Sphere(center, 0.2f, new Metal(new ConstantTexture( new Vector3(0.5f * (1 + (float)rand.NextDouble()), 0.5f * (1 + (float)rand.NextDouble()), 0.5f * (1 + (float)rand.NextDouble()))), 0.5f * (float)rand.NextDouble())));
                         } else {
                             spheres.Add(new Sphere(center, 0.2f, new Dialectric(1.5f)));
                         }
@@ -45,8 +51,8 @@
                 }
             }
             spheres.Add(new Sphere(new Vector3(0, 1, 0), 1.0f, new Dialectric(1.5f)));
-            spheres.Add(new Sphere(new Vector3(-4, 1, 0), 1.0f, new Lambertian(new Vector3(0.4f, 0.2f, 0.1f))));
-            spheres.Add(new Sphere(new Vector3(4, 1, 0), 1, new Metal(new Vector3(0.7f, 0.6f, 0.5f), 0)));
+            spheres.Add(new Sphere(new Vector3(-4, 1, 0), 1.0f, new Lambertian(new ConstantTexture(new Vector3(0.4f, 0.2f, 0.1f)))));
+            spheres.Add(new Sphere(new Vector3(4, 1, 0), 1, new Metal(new ConstantTexture( new Vector3(0.7f, 0.6f, 0.5f)), 0)));
 
             return new HittableList(spheres.ToArray());
         }

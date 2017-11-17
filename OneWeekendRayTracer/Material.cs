@@ -38,25 +38,25 @@ namespace OneWeekendRayTracer {
     }
 
     public class Lambertian : Material {
-        public Vector3 Albedo { get; }
+        public Texture Albedo { get; }
 
-        public Lambertian(Vector3 albedo) {
+        public Lambertian(Texture albedo) {
             Albedo = albedo;
         }
 
         public override bool Scatter(Ray rIn, HitRecord rec, out Vector3 attenuation, out Ray scattered) {
             var target = rec.P + rec.Normal + RandomInUnitSphere();
             scattered = new Ray(rec.P, target - rec.P);
-            attenuation = Albedo;
+            attenuation = Albedo.Value(0,0, rec.P);
             return true;
         }
     }
 
     public class Metal : Material {
-        public Vector3 Albedo { get; }
+        public Texture Albedo { get; }
         public float Fuzz { get; }
 
-        public Metal(Vector3 albedo, float fuzz) {
+        public Metal(Texture albedo, float fuzz) {
             Albedo = albedo;
             Fuzz = fuzz < 1 ? fuzz : 1;
         }
@@ -64,7 +64,7 @@ namespace OneWeekendRayTracer {
         public override bool Scatter(Ray rIn, HitRecord rec, out Vector3 attenuation, out Ray scattered) {
             var reflected = Reflect(Vector3.Normalize(rIn.Direction), rec.Normal);
             scattered = new Ray(rec.P, reflected + RandomInUnitSphere() * Fuzz);
-            attenuation = Albedo;
+            attenuation = Albedo.Value(0,0,rec.P);
             return Vector3.Dot(scattered.Direction, rec.Normal) > 0;
         }
     }

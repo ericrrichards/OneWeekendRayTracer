@@ -10,6 +10,20 @@ namespace OneWeekendRayTracer {
             Min = min;
         }
 
+        public static BoundingBox SurroundingBox(BoundingBox a, BoundingBox b) {
+            var small = new Vector3(
+                Math.Min(a.Min.X, b.Min.X),
+                Math.Min(a.Min.Y, b.Min.Y),
+                Math.Min(a.Min.Z, b.Min.Z)
+            );
+            var big = new Vector3(
+                Math.Max(a.Max.X, b.Max.X),
+                Math.Max(a.Max.Y, b.Max.Y),
+                Math.Max(a.Max.Z, b.Max.Z)
+            );
+            return new BoundingBox(small, big);
+        }
+
         public bool Hit(Ray r, float tMin, float tMax) {
             for (byte a = 0; a < 3; a++) {
                 var t0 = Math.Min(
